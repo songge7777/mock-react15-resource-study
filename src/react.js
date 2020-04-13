@@ -14,6 +14,8 @@ function render(element,container){
   let unit = createUnit(element)
   let markUp =  unit.getMarkUp('0');//用来返回HTML标记
   $(container).html(markUp);
+  // 挂载完成后 触发mounted
+  $(document).trigger('mounted')
 }
 
 export default React;

@@ -33,17 +33,22 @@ class Counter extends React.Component{
     console.log('Counter componentWillMount')
   }
   componentDidMount(){
-    console.log('Counter componentDidMount')
+    setInterval(()=>{
+      this.setState({number:this.state.number+1})
+    },1000)
   }
-  increment(){
-    this.setState({
-      number:this.state.number+1
-    });
+  shouldComponentUpdate(nextProps,nextState){
+    return true
+  }
+  componentDidUpdate(){
+    console.log('Counter componentDidUpdate')
   }
   render(){
-    let p = React.createElement('P',{style:{color:'red'}},this.props.name,this.state.number)
-    let button = React.createElement('button',{onClick:this.increment},'+')
-    return React.createElement('div',{id:'counter'},p,button)
+    // console.log('render')
+    // let p = React.createElement('P',{style:{color:'red'}},this.props.name,this.state.number)
+    // let button = React.createElement('button',{onClick:this.increment},'+')
+    // return React.createElement('div',{id:'counter'},p,button)
+    return this.state.number
   }
 }
 let element1 = React.createElement(Counter,{name:'计数器'})
