@@ -86,6 +86,7 @@ class NativeUnit extends Unit {
   getNewChildren(oldChildrenMap,newChildrenElements){
     let newChildren = [];
     newChildrenElements.forEach((newElement,index)=>{
+      // 一定要个key,千万不要让他走内部的索引key
       let newKey = (newElement.props && newElement.props.key)|| index.toString()
       let oldUnit = oldChildrenMap[newKey];// 找到老的unit
       let oldElement = oldUnit &&oldUnit._currentElement;//获取老元素
