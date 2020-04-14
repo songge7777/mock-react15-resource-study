@@ -4,6 +4,7 @@ class Element{
     this.props = props;
   }
 }
+
 function createElement(type,props={},...children){
   props.children = children||[];//children也是props的一个属性
   return new Element(type,props)

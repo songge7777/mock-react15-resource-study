@@ -33,22 +33,29 @@ class Counter extends React.Component{
     console.log('Counter componentWillMount')
   }
   componentDidMount(){
-    setInterval(()=>{
-      this.setState({number:this.state.number+1})
-    },1000)
+    // setInterval(()=>{
+    //   this.setState({number:this.state.number+1})
+    // },1000)
   }
   shouldComponentUpdate(nextProps,nextState){
     return true
   }
   componentDidUpdate(){
-    console.log('Counter componentDidUpdate')
+    // console.log('Counter componentDidUpdate')
+  }
+  handleClick = ()=>{
+    // console.log('===')
+    this.setState({number:this.state.number+1})
   }
   render(){
+    // 1、
+    // return this.state.number
+    
+    // 2、
     // console.log('render')
-    // let p = React.createElement('P',{style:{color:'red'}},this.props.name,this.state.number)
-    // let button = React.createElement('button',{onClick:this.increment},'+')
-    // return React.createElement('div',{id:'counter'},p,button)
-    return this.state.number
+    let p = React.createElement('P',{style:{color:'red'}},this.state.number)
+    let button = React.createElement('button',{onClick:this.handleClick},'+')
+    return React.createElement('div',{style:{color:this.state.number%2===0?"red":"green",background:this.state.number%2===0?"green":"red"}},p,button)
   }
 }
 let element1 = React.createElement(Counter,{name:'计数器'})
