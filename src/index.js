@@ -27,15 +27,16 @@ let element = React.createElement('button',
 class Counter extends React.Component{
   constructor(props){
     super(props);
-    this.state = {number:0}
+    this.state = {number:0,odd:true}
   }
   componentWillMount(){
     console.log('Counter componentWillMount')
   }
   componentDidMount(){
-    // setInterval(()=>{
-    //   this.setState({number:this.state.number+1})
-    // },1000)
+
+    setTimeout(()=>{
+      this.setState({odd:!this.state.odd})
+    },1000)
   }
   shouldComponentUpdate(nextProps,nextState){
     return true
@@ -53,9 +54,26 @@ class Counter extends React.Component{
     
     // 2、
     // console.log('render')
-    let p = React.createElement('P',{style:{color:'red'}},this.state.number)
-    let button = React.createElement('button',{onClick:this.handleClick},'+')
-    return React.createElement('div',{style:{color:this.state.number%2===0?"red":"green",background:this.state.number%2===0?"green":"red"}},p,button)
+    // let p = React.createElement('P',{},this.state.number)
+    // let button = React.createElement('button',{onClick:this.handleClick},'+')
+    // return React.createElement('div',{style:{color:this.state.number%2===0?"red":"green",background:this.state.number%2===0?"green":"red"}},p,button)
+    
+    // 3、
+    if(this.state.odd){
+      return  React.createElement('ul',{},
+        React.createElement('li',{key:'A'},'A'),
+        React.createElement('li',{key:'B'},'B'),
+        React.createElement('li',{key:'C'},'C'),
+        React.createElement('li',{key:'D'},'D'),
+      )
+    }else{
+      return  React.createElement('ul',{},
+        React.createElement('li',{key:'A'},'A1'),
+        React.createElement('li',{key:'C'},'C1'),
+        React.createElement('li',{key:'B'},'B1'),
+        React.createElement('li',{key:'E'},'E1'),
+        React.createElement('li',{key:'F'},'F1'),
+      )}
   }
 }
 let element1 = React.createElement(Counter,{name:'计数器'})
