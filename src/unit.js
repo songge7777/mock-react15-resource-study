@@ -150,6 +150,16 @@ class NativeUnit extends Unit {
         }
         lastIndex = Math.max(lastIndex,oldChildUnit._mountIndex)
       }else{
+        // 当标签不一样的时候 没有复用 要删除原有的 
+        if(oldChildUnit){
+          diffQueue.push({
+            parentId:this._reactid,
+            parentNode:$(`[data-reactid="${this._reactid}"]`),
+            type:types.REMOVE,
+            fromIndex:oldChildUnit._mountIndex,
+          }) 
+          $(document).undelegate(`.${oldChildUnit._reactid}`)
+        }
         // 新的节点 就去创建
         diffQueue.push({
           parentId:this._reactid,
