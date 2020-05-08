@@ -4,9 +4,9 @@
 
 import React from './react';
 // jsx 需要用babel转成js
-function sayHello(){
-  alert('hello')
-}
+// function sayHello(){
+//   alert('hello')
+// }
 // let element = (
 //   <button id='sayHello' style={{color:'red'}} onClick={sayHello}>
 //     say
@@ -16,11 +16,13 @@ function sayHello(){
 //   </button>
 // )
 // babel把上面的转成下面这样
-let element = React.createElement('button',
-  {id:'sayHello',style:{color:'red',backgroundColor:'green'},onClick:sayHello},
-  'say',
-  React.createElement('b',{},'Hello')
-)
+// let element = React.createElement('button',
+//   {id:'sayHello',style:{color:'red',backgroundColor:'green'},onClick:sayHello},
+//   'say',
+//   React.createElement('b',{},'Hello')
+// )
+// React.render(element,document.getElementById('root'))
+
 // 虚拟DOM DOM-DIFF就是对虚拟DOM进行比较
 // {type:'button',props:{id:'sayHello'}}
 
@@ -33,8 +35,8 @@ class Counter extends React.Component{
     console.log('Counter componentWillMount')
   }
   componentDidMount(){
-
     setTimeout(()=>{
+      console.log('==>')
       this.setState({odd:!this.state.odd})
     },1000)
   }
@@ -78,3 +80,37 @@ class Counter extends React.Component{
 }
 let element1 = React.createElement(Counter,{name:'计数器'})
 React.render(element1,document.getElementById('root'))
+
+// import React from './react'
+// class Todos extends React.Component{
+//   constructor(props){
+//     super(props)
+//     this.state = {list:[],text:''}
+//   }
+//   onChange = (event)=>{
+//     this.setState({text:event.target.value})
+//   }
+//   handleClick = (event)=>{
+//     let text = this.state.text
+//     this.setState({
+//       list:[...this.state.list,text],text:''
+//     })
+//   }
+//   onDel = (index)=>{
+//     this.setState({
+//       list:[...this.state.list.slice(0,index),...this.state.list.slice(index+1)]
+//     })
+//   }
+//   render(){
+//     let lists = this.state.list.map((item,index)=>{
+//       return React.createElement('div',{},item,React.createElement('button',{onClick:()=>this.onDel(index)},'x'))
+//     })
+//     let input = React.createElement('input',{onKeyup:this.onChange,value:this.state.text})
+//     let button = React.createElement('button',{onClick:this.handleClick},'+')
+//     return (
+//       React.createElement('div',{},input,button,...lists)
+//     )
+//   }
+// }
+// let element = React.createElement(Todos,{name:'计数器'})
+// React.render(element,document.getElementById('root'))
