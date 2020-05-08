@@ -339,12 +339,10 @@ function shouldDeepCompare(oldElement, newElement) {
 }
 function createUnit(element) {
   if (typeof element === 'string' || typeof element === 'number') {
-    console.log(111, element)
     return new TextUnit(element)
   }
   //  element.type === 'string' 处理原生的dom 防止类组件或者函数组件
   if (element instanceof Element && typeof element.type === 'string') {
-    console.log(222, element)
     return new NativeUnit(element)
   }
   // 类最终转成函数
