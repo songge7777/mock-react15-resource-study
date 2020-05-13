@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div style="background: red;width: 0;height: 20px;"></div>
+  <button>开始</button>
+  <script>
+    const div = document.querySelector('div')
+    const button = document.querySelector('button')
+    let start;
+    function progress(){
+      div.style.width = div.offsetWidth + 1 + 'px'
+      div.innerHTML = div.offsetWidth + '%'
+      if(div.offsetWidth < 100){
+        let current = Date.now()
+        console.log(current - start)
+        start = current
+        timer = requestAnimationFrame(progress)
+      }
+    }
+    button.onclick = function(){
+      console.log('123',requestAnimationFrame)
+      div.style.width = 0;
+      start = Date.now();
+      requestAnimationFrame(progress);
+    }
+  </script>
+</body>
+</html>

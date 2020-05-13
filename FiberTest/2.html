@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 
+    function sleep(d){
+      for(var t = Date.now();Date.now() - t <= d;){}
+    }
+    const works = [
+      ()=>{
+        console.log('第一个任务开始')
+        sleep(20)
+        console.log('第一个任务结束')
+      },
+      ()=>{
+        console.log('第二个任务开始')
+        sleep(20)
+        console.log('第二个任务结束')
+      },
+      ()=>{
+        console.log('第三个任务开始')
+        sleep(20)
+        console.log('第三个任务结束')
+      }
+    ]
+    // timeout 意思是 告诉浏览器 1000ms 即使你没有空闲时间也得帮我执行, 因为我等不及了
+    requestIdleCallback(workLoop,{timeout:1000})
+    function workLoop(deadLine){
+      // 返回值 deadLine.didTimeout 布尔值 表示任务是否超时 
+      // deadLine.timeRemaining() 表示当前帧剩余的时间
+      console.log('本帧剩余时间', parseInt(deadLine.timeRemaining()));
+      while((deadLine.timeRemaining() > 1 || deadLine.didTimeout) && works.length>0){
+        performUnitOfWork()
+      }
+      if(works.length>0){
+        console.log(`只剩下${parseInt(deadLine.timeRemaining())}ms,时间片到了等待下次空闲时间的调度`);
+        requestIdleCallback(workLoop)
+      }
+    }
+
+    function performUnitOfWork(){
+      works.shift()()
+    }
+
+
+
+  </script>
+</body>
+</html>
