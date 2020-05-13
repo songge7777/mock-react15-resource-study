@@ -1,11 +1,21 @@
 
 export function setProps(dom,oldProps,newProps){
-  // for(let key in oldProps){
-    
-  // }
+  // 先处理老的
+  for(let key in oldProps){
+    if(key !== 'children'){
+      if(newProps.hasOwnProperty(key)){
+        setProp(dom,key,newProps[key])// 新老都有 则更新
+      }else{
+        dom.removeAttribute(key)// 老props里有此属性 新props没有 则删除
+      }
+    }
+  }
+  // 在处理新的
   for(let key in newProps){
     if(key !== 'children'){
-      setProp(dom,key,newProps[key])
+      if(!oldProps.hasOwnProperty(key)){// 老的没有 新的没有 就添加此属性
+        setProp(dom,key,newProps[key]);
+      }
     }
   }
 }
