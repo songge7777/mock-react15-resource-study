@@ -143,22 +143,25 @@ class NativeUnit extends Unit {
       // 第一个拿到的就是 newKey=A
       let newKey = (newUnit._currentElement.props && newUnit._currentElement.props.key) || i.toString()
       let oldChildUnit = oldChildrenUnitMap[newKey];
-      if (oldChildUnit === newUnit) {// 如果说新老一致的话 说明复用了老节点
-        console.log('***********============********',i,oldChildUnit._mountIndex,lastIndex)
+      if (oldChildUnit === newUnit) {
+        // 1、如果说新老一致的话 说明复用了老节点  
+        // oldChildUnit._mountIndex < lastIndex 说明key值获取的值是一样的 但是位子不一样 老元素的位子 < 小于新元素的位子(只有老元素的位子小于新元素的位子才需要move,用lastIndex做标识,反过来不用挪动)
+        // lastIndex 在老元素中最后一个固定的索引值
         if (oldChildUnit._mountIndex < lastIndex) {
-          console.log('*******************',i,oldChildUnit._mountIndex,'this._reactid',this._reactid)
           diffQueue.push({
             parentId: this._reactid,
             parentNode: $(`[data-reactid="${this._reactid}"]`),
-            type: types.MOVE,
+            type: types.个,
             fromIndex: oldChildUnit._mountIndex,
             toIndex: i
           })
         }
         lastIndex = Math.max(lastIndex, oldChildUnit._mountIndex)
       } else {
-        // 当标签不一样的时候 没有复用 要删除原有的 
+        // 当标签不一样的时候 key 相同
+        // 2、老节点没有复用的 要删除原有的 
         if (oldChildUnit) {
+          console.log('del',oldChildUnit)
           diffQueue.push({
             parentId: this._reactid,
             parentNode: $(`[data-reactid="${this._reactid}"]`),
@@ -169,7 +172,7 @@ class NativeUnit extends Unit {
           this._renderedChildrenUnits = this._renderedChildrenUnits.filter(item => item !== oldChildUnit)
           $(document).undelegate(`.${oldChildUnit._reactid}`)
         }
-        // 新的节点 就去创建
+        // 3、新的节点 就去创建
         diffQueue.push({
           parentId: this._reactid,
           parentNode: $(`[data-reactid="${this._reactid}"]`),
@@ -184,7 +187,9 @@ class NativeUnit extends Unit {
     }
     for (let oldKey in oldChildrenUnitMap) {
       let oldChild = oldChildrenUnitMap[oldKey]
+      // 4、新节点里面没有老节点的 要删除掉
       if (!newChildrenUnitMap.hasOwnProperty(oldKey)) {
+        console.log('oldChild',oldChild)
         diffQueue.push({
           parentId: this._reactid,
           parentNode: $(`[data-reactid="${this._reactid}"]`),
@@ -222,6 +227,7 @@ class NativeUnit extends Unit {
     })
     return { newChildrenUnitMap, newChildrenUnits };
   }
+
   getOldChildrenMap(childrenUnits = []) {
     let map = {}
     for (let i = 0; i < childrenUnits.length; i++) {
@@ -231,6 +237,7 @@ class NativeUnit extends Unit {
     }
     return map
   }
+
   updateDOMProperties(oldProps, newProps) {
     let propName;
     //循环老的属性集合
