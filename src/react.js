@@ -1,4 +1,7 @@
 import { ELEMENT_TEXT } from './constants'
+import {  Update } from './UpdateQueue'
+import { scheduleRoot,useReducer,useState } from './scheduler';
+
 /**
  * 创建元素(虚拟DOM)的用法
  * @param {*} type 元素的类型div span p 
@@ -21,7 +24,26 @@ function createElement(type, config, ...children){
     }
   }
 }
+class Component {
+  constructor(props) {
+    this.props = props;
+    // this.updateQueue = new UpdateQueue()
+  }
+  setState(payload){
+    // 可能是对象,也可能是一个函数
+    let update = new Update(payload)
+    // updateQueue其实是放在此类组件对应的fiber节点的 internalFiber
+    this.internalFiber.updateQueue.enqueueUpdate(update)
+    // this.updateQueue.enqueueUpdate(update)
+    scheduleRoot();// 从跟节点开始调度
+  } 
+}
+// 类组件
+Component.prototype.isReactComponent = {}
 const React = {
-  createElement
+  createElement,
+  Component,
+  useReducer,
+  useState
 }
 export default React
